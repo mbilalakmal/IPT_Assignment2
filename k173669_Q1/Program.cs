@@ -14,9 +14,9 @@ namespace k173669_Q1
             string logPath = args.Length > 0 ? args[0] : @"C:\Users\bilal\Downloads\IPT_Assignment2\";
 
             /// Validate the  argument as an exisiting directory path.
-            string directoryPath = logPath;
-            if (Directory.Exists(directoryPath) == false)
-                throw new ApplicationException($"{logPath} is not an existing directory.");
+            //string directoryPath = logPath;
+            //if (Directory.Exists(directoryPath) == false)
+                //throw new ApplicationException($"{logPath} is not an existing directory.");
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
@@ -26,9 +26,22 @@ namespace k173669_Q1
                 .CreateLogger()
                 ;
 
-            CreateHostBuilder(args).Build().Run();
+            try
+            {
+                Log.Information("Starting DownloadWorker.");
+                CreateHostBuilder(args).Build().Run();
 
-            Log.CloseAndFlush();
+                return;
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "Could not start DownloadWorker.");
+                return;
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
