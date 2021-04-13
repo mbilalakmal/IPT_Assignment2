@@ -61,5 +61,7 @@ namespace k173669_Q1
     {
         public string URL { get; set; }
         public string OutputDirectory { get; set; }
+
+        public int IntervalBetween { get; set; }
     }
 }
