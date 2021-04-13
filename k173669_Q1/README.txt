@@ -13,6 +13,6 @@ Example:
 sc.exe create k173669_Q1 binpath= Path/to/publish/k173669_Q1.exe
 
 After starting the service, you can observe the running state by checking the logs at
-Documents/LogFile.txt
+LogFile.txt where the directory can be passed as a command line argument.
 
 You should see this: [SC] CreateService SUCCESS
