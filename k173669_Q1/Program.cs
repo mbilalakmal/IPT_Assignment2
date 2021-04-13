@@ -1,9 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace k173669_Q1
 {
@@ -19,6 +15,9 @@ namespace k173669_Q1
                 .UseWindowsService()
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.Configure<DownloadConfig>(hostContext.Configuration.GetSection("AppSettings"));
+                    services.AddLogging();
+                    services.AddSingleton<DownloadProcess>();
                     services.AddHostedService<Worker>();
                 });
     }
