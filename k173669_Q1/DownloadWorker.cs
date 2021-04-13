@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace k173669_Q1
 {
-    public class Worker : BackgroundService
+    public class DownloadWorker : BackgroundService
     {
-        private readonly ILogger<Worker> _logger;
+        private readonly ILogger<DownloadWorker> _logger;
         private readonly DownloadProcess downloadProcess;
 
-        public Worker(ILogger<Worker> logger, DownloadProcess downloadProcess)
+        public DownloadWorker(ILogger<DownloadWorker> logger, DownloadProcess downloadProcess)
         {
             _logger = logger;
             this.downloadProcess = downloadProcess;

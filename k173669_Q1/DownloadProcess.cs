@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace k173669_Q1
 {
-
     public class DownloadProcess
     {
         private readonly HttpClient client;

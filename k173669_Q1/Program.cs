@@ -18,7 +18,7 @@ namespace k173669_Q1
                     services.Configure<DownloadConfig>(hostContext.Configuration.GetSection("AppSettings"));
                     services.AddLogging();
                     services.AddSingleton<DownloadProcess>();
-                    services.AddHostedService<Worker>();
+                    services.AddHostedService<DownloadWorker>();
                 });
     }
 }
