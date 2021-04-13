@@ -46,14 +46,13 @@ namespace k173669_Q1
 
             string responseBody = await client.GetStringAsync(uriResult);
 
-            logger.LogInformation($"Downloaded webpage at {DateTimeOffset.Now}.");
+            logger.LogInformation($"Downloaded webpage.");
 
-            string fileName = "Summary " + DateTime.Now.ToString("yyMMMdd hh.mm tt") + ".html";
+            string fileName = "Summary" + DateTime.Now.ToString("yyyyMMMdd hh.mmtt") + ".html";
             using StreamWriter outputFile = new(Path.Combine(outputDirectory, fileName));
             await outputFile.WriteAsync(responseBody);
 
-            logger.LogInformation($"Saved webpage as" +
-                $" {Path.Combine(outputDirectory, fileName)} at {DateTimeOffset.Now}.");
+            logger.LogInformation($"Saved webpage as HTML.");
         }
     }
 
