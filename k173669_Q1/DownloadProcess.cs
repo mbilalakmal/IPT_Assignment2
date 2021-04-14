@@ -38,6 +38,8 @@ namespace k173669_Q1
                 throw new ApplicationException($"{url} is not a valid URL.");
             }
 
+            Directory.CreateDirectory(outputDirectory);
+
             if (Directory.Exists(outputDirectory) == false)
             {
                 /// TODO: Log instead of throwing exception
@@ -46,13 +48,13 @@ namespace k173669_Q1
 
             string responseBody = await client.GetStringAsync(uriResult);
 
-            logger.LogInformation($"Downloaded webpage.");
+            logger.LogInformation("Downloaded webpage.");
 
-            string fileName = "Summary" + DateTime.Now.ToString("yyyyMMMdd hh.mmtt") + ".html";
+            string fileName = "Summary" + DateTime.Now.ToString("yyyyMMMdd hhmmtt") + ".html";
             using StreamWriter outputFile = new(Path.Combine(outputDirectory, fileName));
             await outputFile.WriteAsync(responseBody);
 
-            logger.LogInformation($"Saved webpage as HTML.");
+            logger.LogInformation("Saved webpage as HTML.");
         }
     }
 

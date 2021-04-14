@@ -22,7 +22,7 @@ namespace k173669_Q1
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Information)
                 .Enrich.FromLogContext()
-                .WriteTo.File( Path.Combine(logPath, "LogFile.txt"))
+                .WriteTo.File( Path.Combine(logPath, "LogFile_A2_Q1.txt"))
                 .CreateLogger()
                 ;
 
@@ -44,8 +44,9 @@ namespace k173669_Q1
             }
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
                 .UseWindowsService()
                 .UseSerilog()
                 .ConfigureServices((hostContext, services) =>
@@ -55,5 +56,6 @@ namespace k173669_Q1
                     services.AddSingleton<DownloadProcess>();
                     services.AddHostedService<DownloadWorker>();
                 });
+        }
     }
 }
