@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,19 +9,21 @@ namespace k173669_Q3
 {
     public class ArchiveWorker : BackgroundService
     {
-        private readonly ILogger<ArchiveWorker> _logger;
+        private readonly ArchiveProcess archiveProcess;
+        private readonly ArchiveConfig config;
 
-        public ArchiveWorker(ILogger<ArchiveWorker> logger)
+        public ArchiveWorker(ArchiveProcess archiveProcess, IOptions<ArchiveConfig> config)
         {
-            _logger = logger;
+            this.archiveProcess = archiveProcess;
+            this.config = config.Value;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(1000, stoppingToken);
+                archiveProcess.ArchiveOldFiles();
+                await Task.Delay(config.IntervalBetween * 1000, stoppingToken);
             }
         }
     }
