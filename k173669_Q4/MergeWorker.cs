@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +11,21 @@ namespace k173669_Q4
 {
     public class MergeWorker : BackgroundService
     {
-        private readonly ILogger<MergeWorker> _logger;
+        private readonly MergeProcess mergeProcess;
+        private readonly MergeConfig config;
 
-        public MergeWorker(ILogger<MergeWorker> logger)
+        public MergeWorker(MergeProcess archiveProcess, IOptions<MergeConfig> config)
         {
-            _logger = logger;
+            this.mergeProcess = archiveProcess;
+            this.config = config.Value;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(1000, stoppingToken);
+                mergeProcess.MergeXmlFilesToJson();
+                await Task.Delay(config.IntervalBetween * 1000, stoppingToken);
             }
         }
     }
