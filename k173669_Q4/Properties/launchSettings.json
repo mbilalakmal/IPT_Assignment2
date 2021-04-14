@@ -1,0 +1,11 @@
+﻿{
+  "profiles": {
+    "k173669_Q4": {
+      "commandName": "Project",
+      "dotnetRunMessages": "true",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
