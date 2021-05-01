@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace k173669_Q4
@@ -40,6 +38,11 @@ namespace k173669_Q4
                     .OrderBy(file => file.LastWriteTime)
                     .ToList();
 
+                if(xmlFiles.Count == 0)
+                {
+                    logger.LogInformation($"No XML files found in {subfolder}.");
+                }
+
                 /// Each file contains a historic snapshot of scrips within that category
                 foreach (var xmlFile in xmlFiles)
                 {
@@ -59,8 +62,7 @@ namespace k173669_Q4
                             );
                     }
 
-                    logger.LogInformation(historicalStocks.Count.ToString());
-                    logger.LogInformation(historicalStocks.First().Key.Scrip);
+                    logger.LogInformation($"Deleting {xmlFile}");
 
                     /// Delete the XML file
                     xmlFile.Delete();
@@ -79,6 +81,8 @@ namespace k173669_Q4
                 /// Check if JSON file already exists and read into memory if true
                 if (File.Exists(fileName))
                 {
+                    logger.LogInformation($"{fileName} found");
+
                     var text = File.ReadAllText(fileName);
                     var historicalScrips = (HistoricalScrips)JsonSerializer.Deserialize(
                         text, typeof(HistoricalScrips)
@@ -86,6 +90,8 @@ namespace k173669_Q4
 
                     historicalScrips.LastUpdatedOn = DateTime.Now;
                     historicalScrips.ScripData.AddRange(historicalStock.Value);
+
+                    logger.LogInformation($"Appending to {fileName}");
 
                     var serial = JsonSerializer.Serialize(historicalScrips);
                     File.WriteAllText(fileName, serial);
@@ -97,6 +103,8 @@ namespace k173669_Q4
                         LastUpdatedOn = DateTime.Now,
                         ScripData = historicalStock.Value,
                     };
+
+                    logger.LogInformation($"Writing to {fileName}");
 
                     var serial = JsonSerializer.Serialize(historicalScrips);
                     File.WriteAllText(fileName, serial);
@@ -110,7 +118,11 @@ namespace k173669_Q4
 
             using FileStream fileStream = new(fileName, FileMode.Open);
 
+            logger.LogInformation($"Reading from {fileName}");
+
             var stocks = (List<Scrips>)serializer.Deserialize(fileStream);
+
+            logger.LogInformation($"Read {stocks.Count} Entries");
 
             return stocks;
         }
